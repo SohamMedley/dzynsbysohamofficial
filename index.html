@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DZYNSBYSOHAM | Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* BRAND PALETTE */
+            --brand-blue: #0055FF; 
+            --bg: #000000;         
+            --text-main: #ffffff;  
+            --text-muted: #86868b; 
+            
+            /* Glassmorphism */
+            --apple-glass: rgba(255, 255, 255, 0.03);
+            --apple-border: rgba(255, 255, 255, 0.08);
+            
+            /* Physics */
+            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            background-color: var(--bg);
+            color: var(--text-main);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            width: 100%;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Hide cursor only on devices that support hover (Desktop) */
+        @media (hover: hover) and (pointer: fine) {
+            * { cursor: none; }
+        }
+
+        /* --- AMBIENT BLUE GLOW --- */
+        .bg-glow {
+            position: fixed;
+            top: -20vh; left: 50%;
+            transform: translateX(-50%);
+            width: 100vw; height: 50vh;
+            background: radial-gradient(circle, rgba(0, 85, 255, 0.15) 0%, rgba(0,0,0,0) 60%);
+            z-index: -1;
+            filter: blur(80px);
+            animation: breathe 8s infinite alternate ease-in-out;
+            pointer-events: none;
+        }
+
+        @keyframes breathe {
+            0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
+            100% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+        }
+
+        /* --- BRANDED CURSOR (Desktop Only) --- */
+        .cursor-dot {
+            position: fixed; width: 12px; height: 12px;
+            background: var(--brand-blue); border-radius: 50%;
+            pointer-events: none; z-index: 10000;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s var(--spring), height 0.3s var(--spring), background 0.3s;
+        }
+        .cursor-ring {
+            position: fixed; width: 40px; height: 40px;
+            border: 1.5px solid rgba(0, 85, 255, 0.5); border-radius: 50%;
+            pointer-events: none; z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: all 0.15s ease-out;
+        }
+        .cursor-hover .cursor-dot {
+            width: 70px; height: 70px;
+            background: rgba(0, 85, 255, 0.15); 
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(0, 85, 255, 0.3);
+        }
+        .cursor-hover .cursor-ring { width: 0; height: 0; opacity: 0; }
+
+        /* --- DYNAMIC ISLAND NAV --- */
+        nav {
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%);
+            background: rgba(10, 10, 10, 0.7);
+            backdrop-filter: blur(24px) saturate(180%);
+            -webkit-backdrop-filter: blur(24px) saturate(180%);
+            border: 1px solid var(--apple-border);
+            padding: 12px 24px; border-radius: 100px;
+            display: flex; align-items: center; gap: 20px;
+            z-index: 1000; box-shadow: 0 10px 30px rgba(0, 85, 255, 0.1);
+            transition: all 0.4s var(--spring);
+            width: max-content;
+            max-width: 90vw;
+        }
+        nav:hover {
+            padding: 12px 32px; background: rgba(20, 20, 20, 0.9);
+            border-color: rgba(0, 85, 255, 0.3);
+        }
+        .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; }
+        .nav-status {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 12px; font-weight: 600; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--brand-blue); white-space: nowrap;
+        }
+        .status-dot {
+            width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 85, 255, 0.6); }
+            70% { box-shadow: 0 0 0 8px rgba(0, 85, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 85, 255, 0); }
+        }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 90vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center; padding: 0 5%;
+        }
+        .hero-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 800; line-height: 0.9;
+            text-transform: uppercase; margin-bottom: 24px;
+        }
+        .hero-title .highlight {
+            color: transparent; -webkit-text-stroke: 2px var(--brand-blue);
+            position: relative; display: inline-block;
+            transition: all 0.3s var(--smooth);
+        }
+        .hero-title:hover .highlight {
+            color: var(--brand-blue); -webkit-text-stroke: 0px var(--brand-blue);
+            transform: scale(1.05) rotate(-2deg);
+        }
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.4rem);
+            color: var(--text-muted); max-width: 600px; line-height: 1.5;
+            padding: 0 15px;
+        }
+
+        /* --- STATS BAND --- */
+        .stats-band {
+            display: flex; justify-content: center; align-items: center; gap: clamp(2rem, 5vw, 5rem);
+            border-top: 1px solid var(--apple-border); border-bottom: 1px solid var(--apple-border);
+            padding: 2rem 5%; margin-bottom: 5rem;
+            background: linear-gradient(90deg, transparent, rgba(0, 85, 255, 0.05), transparent);
+        }
+        .stat-item { text-align: center; }
+        .stat-item h3 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 2.5rem); color: var(--brand-blue); }
+        .stat-item p { font-size: 0.8rem; text-transform: uppercase; color: var(--text-main); letter-spacing: 1px; font-weight: 600; margin-top: 5px; }
+
+        /* --- INTERLOCKING PORTFOLIO GRID (8 ITEMS) --- */
+        .section-header {
+            text-align: center; margin-bottom: 3rem;
+            font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 3rem); text-transform: uppercase;
+        }
+        
+        .works-grid {
+            display: grid; 
+            grid-template-columns: repeat(12, 1fr); 
+            gap: 24px;
+            padding: 0 5vw 5rem; 
+            max-width: 1400px; 
+            margin: 0 auto;
+            /* Dense flow allows tall posters to interlock with thumbnails automatically */
+            grid-auto-flow: dense; 
+        }
+        
+        .work-card {
+            display: block; text-decoration: none;
+            border-radius: 24px; overflow: hidden; position: relative;
+            border: 1px solid var(--apple-border); transform-origin: center;
+        }
+
+        /* DESKTOP GRID ARCHITECTURE:
+           Thumbnails are wide/square. Posters are tall (span 2 rows).
+        */
+        .work-card:nth-child(1) { grid-column: span 8; aspect-ratio: 16/10; } /* Thumbnail 1 */
+        .work-card:nth-child(2) { grid-column: span 4; grid-row: span 2; aspect-ratio: 3/4; } /* Poster 1 (Tall) */
+        .work-card:nth-child(3) { grid-column: span 4; aspect-ratio: 1/1; } /* Thumbnail 2 */
+        .work-card:nth-child(4) { grid-column: span 4; aspect-ratio: 1/1; } /* Thumbnail 3 */
+        .work-card:nth-child(5) { grid-column: span 4; grid-row: span 2; aspect-ratio: 3/4; } /* Poster 2 (Tall) */
+        .work-card:nth-child(6) { grid-column: span 8; aspect-ratio: 16/10; } /* Thumbnail 4 */
+        .work-card:nth-child(7) { grid-column: span 4; aspect-ratio: 1/1; } /* Thumbnail 5 */
+        .work-card:nth-child(8) { grid-column: span 4; aspect-ratio: 1/1; } /* Thumbnail 6 */
+
+        .work-img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.8s var(--smooth);
+        }
+        .work-card:hover .work-img { transform: scale(1.05); }
+
+        .work-info {
+            position: absolute; bottom: 0; left: 0; width: 100%;
+            padding: 30px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
+            transform: translateY(20px); opacity: 0;
+            transition: all 0.4s var(--smooth);
+        }
+        .work-card:hover .work-info { transform: translateY(0); opacity: 1; }
+        .work-info h3 { font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 5px; color: var(--text-main); }
+        .work-info p { color: var(--brand-blue); font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+
+        /* --- MARQUEE --- */
+        .marquee {
+            background: transparent; color: transparent;
+            -webkit-text-stroke: 1px var(--apple-border);
+            padding: 20px 0; overflow: hidden; white-space: nowrap;
+            transform: rotate(-2deg) scale(1.05); margin: 5rem 0;
+            border-top: 1px solid var(--apple-border); border-bottom: 1px solid var(--apple-border);
+            transition: all 0.3s ease;
+        }
+        .marquee:hover {
+            color: var(--brand-blue); -webkit-text-stroke: 0px;
+            background: rgba(0, 85, 255, 0.05);
+        }
+        .marquee-inner { display: flex; animation: scroll 15s linear infinite; font-weight: 800; font-family: 'Syne'; font-size: 2rem; text-transform: uppercase; }
+        .marquee span { padding: 0 2rem; }
+        @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+        /* --- CONTACT CTA --- */
+        .contact { text-align: center; padding: 5rem 5% 10rem; display: flex; flex-direction: column; align-items: center; }
+        .contact h2 { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 3rem; text-transform: uppercase; }
+        
+        .magnetic-wrap { display: inline-block; padding: 2rem; margin: -2rem; }
+        
+        .btn-ig-huge {
+            padding: 24px 64px; border-radius: 100px; font-weight: 800;
+            text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
+            background: var(--brand-blue); color: var(--text-main);
+            font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 3vw, 1.5rem); text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(0, 85, 255, 0.2);
+            transition: transform 0.2s ease-out, box-shadow 0.3s;
+            will-change: transform;
+            text-align: center;
+        }
+        .btn-ig-huge:hover { box-shadow: 0 20px 50px rgba(0, 85, 255, 0.5); }
+
+        /* --- VADA PAV NOTIFICATION --- */
+        .vada-pav {
+            position: fixed; bottom: 24px; right: 24px;
+            background: rgba(10,10,10,0.8); backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 85, 255, 0.3); border-radius: 100px;
+            padding: 12px; display: flex; align-items: center; gap: 12px;
+            z-index: 100; overflow: hidden; width: 56px; height: 56px;
+            transition: all 0.5s var(--spring); cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 85, 255, 0.15);
+        }
+        .vada-icon { font-size: 24px; min-width: 32px; text-align: center; }
+        .vada-text { font-size: 14px; font-weight: 600; white-space: nowrap; opacity: 0; transition: opacity 0.3s; color: var(--text-main); }
+        .vada-pav:hover { width: 230px; padding: 12px 24px 12px 16px; background: rgba(0, 85, 255, 0.1); }
+        .vada-pav:hover .vada-text { opacity: 1; transition-delay: 0.1s; }
+
+        /* --- ANIMATION CLASSES --- */
+        .anim-up {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s var(--smooth), transform 0.8s var(--smooth);
+        }
+        .anim-up.show { opacity: 1; transform: translateY(0); }
+        
+        .anim-fade {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.8s var(--smooth);
+        }
+        .anim-fade.show { opacity: 1; transform: translateY(0); }
+
+        /* =========================================
+           ULTRA-RESPONSIVE MOBILE FIXES
+           ========================================= */
+        @media (max-width: 768px) {
+            /* Kill the custom cursor entirely on mobile so it doesn't break scrolling */
+            .cursor-dot, .cursor-ring { display: none !important; }
+            
+            nav { padding: 10px 16px; gap: 10px; width: 90%; justify-content: space-between; }
+            .nav-brand { font-size: 0.9rem; }
+            .nav-status { font-size: 10px; }
+
+            .hero-title { font-size: 3rem; }
+            .stats-band { flex-direction: column; gap: 2rem; padding: 3rem 5%; }
+
+            /* Grid override: Everything stacks, but maintains correct proportions */
+            .work-card { 
+                grid-column: span 12 !important; 
+                grid-row: span 1 !important; 
+                border-radius: 16px;
+            }
+            
+            /* Differentiate landscape thumbnails from portrait posters on mobile */
+            .work-card.thumb { aspect-ratio: 16/9 !important; height: auto; }
+            .work-card.poster { aspect-ratio: 4/5 !important; height: auto; }
+
+            .work-info { 
+                opacity: 1; /* Always show text on mobile */
+                transform: translateY(0);
+                padding: 20px;
+                background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, transparent);
+            }
+
+            .magnetic-wrap { display: block; padding: 0; margin: 0; width: 100%; }
+            .btn-ig-huge { width: 100%; padding: 20px; font-size: 1.1rem; }
+
+            .vada-pav { bottom: 16px; right: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <div class="cursor-dot"></div>
+    <div class="cursor-ring"></div>
+
+    <nav class="hover-target">
+        <div class="nav-brand">DZYNSBYSOHAM</div>
+        <div class="nav-status"><div class="status-dot"></div> OPEN FOR WORK</div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="hero-title anim-up hover-target" style="transition-delay: 0.1s;">
+            VISUALS THAT<br><span class="highlight">GET CLICKS.</span>
+        </h1>
+        <p class="hero-subtitle anim-up" style="transition-delay: 0.2s;">
+            Specializing in high-performance thumbnails and creative design for crypto, gaming, and finance creators.
+        </p>
+    </section>
+
+    <div class="stats-band anim-up">
+        <div class="stat-item"><h3>4+</h3><p>Years Exp</p></div>
+        <div class="stat-item"><h3>500+</h3><p>Thumbnails</p></div>
+        <div class="stat-item"><h3>100%</h3><p>Satisfaction</p></div>
+    </div>
+
+    <h2 class="section-header anim-up">Selected Works</h2>
+    
+    <section class="works-grid">
+        
+        <a href="#" class="work-card thumb anim-fade hover-target">
+            <img src="Images/thumbnail1.jpg" alt="10x Crypto Returns" class="work-img">
+            <div class="work-info">
+                <h3>10x Crypto Returns</h3><p>Thumbnail Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card poster anim-fade hover-target">
+            <img src="Images/poster1.jpg" alt="Brand Poster" class="work-img">
+            <div class="work-info">
+                <h3>Visual Identity</h3><p>Poster Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card thumb anim-fade hover-target">
+            <img src="Images/thumbnail2.jpg" alt="Aram Se Dost" class="work-img">
+            <div class="work-info">
+                <h3>Aram Se Dost</h3><p>Thumbnail Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card thumb anim-fade hover-target">
+            <img src="Images/thumbnail3.jpg" alt="Big Stepper Reaction" class="work-img">
+            <div class="work-info">
+                <h3>Big Stepper Reaction</h3><p>Thumbnail Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card poster anim-fade hover-target">
+            <img src="Images/poster2.jpg" alt="Promo Poster" class="work-img">
+            <div class="work-info">
+                <h3>Promo Asset</h3><p>Poster Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card thumb anim-fade hover-target">
+            <img src="Images/thumbnail4.jpg" alt="700K Spotify Streams" class="work-img">
+            <div class="work-info">
+                <h3>700K Spotify Streams</h3><p>Thumbnail Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card thumb anim-fade hover-target">
+            <img src="Images/thumbnail5.jpg" alt="Divine Reaction" class="work-img">
+            <div class="work-info">
+                <h3>Hitthuman - Divine</h3><p>Thumbnail Design</p>
+            </div>
+        </a>
+
+        <a href="#" class="work-card thumb anim-fade hover-target">
+            <img src="Images/thumbnail6.jpg" alt="Does Rawal Cooked?" class="work-img">
+            <div class="work-info">
+                <h3>Does Rawal Cooked?</h3><p>Thumbnail Design</p>
+            </div>
+        </a>
+
+    </section>
+
+    <div class="marquee hover-target">
+        <div class="marquee-inner">
+            <span>DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM ///</span>
+            <span>DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM ///</span>
+        </div>
+    </div>
+
+    <section class="contact anim-up">
+        <h2>Let's Secure<br>The Bag.</h2>
+        <div class="magnetic-wrap anim-up" style="transition-delay: 0.1s;">
+            <a href="https://instagram.com/dzynsbysoham" target="_blank" class="btn-ig-huge hover-target">
+                Hit My DMs on IG
+            </a>
+        </div>
+    </section>
+
+    <div class="vada-pav hover-target" onclick="downloadQR()">
+        <div class="vada-icon">🍔</div>
+        <div class="vada-text">Download Payment QR</div>
+    </div>
+
+    <script>
+        // Initial load animations
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelectorAll('.hero .anim-up').forEach(el => el.classList.add('show'));
+                document.querySelector('.stats-band').classList.add('show');
+            }, 100);
+        });
+
+        // Desktop Custom Cursor & Magnetic Button (Only runs on non-touch devices)
+        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+            const dot = document.querySelector('.cursor-dot');
+            const ring = document.querySelector('.cursor-ring');
+            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+            let ringX = mouseX, ringY = mouseY;
+
+            window.addEventListener('mousemove', (e) => {
+                mouseX = e.clientX; mouseY = e.clientY;
+                dot.style.left = `${mouseX}px`; dot.style.top = `${mouseY}px`;
+            });
+
+            function renderRing() {
+                ringX += (mouseX - ringX) * 0.2; 
+                ringY += (mouseY - ringY) * 0.2;
+                ring.style.left = `${ringX}px`; ring.style.top = `${ringY}px`;
+                requestAnimationFrame(renderRing);
+            }
+            renderRing();
+
+            document.querySelectorAll('.hover-target, a').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+
+            // Magnetic Pull Logic
+            const magneticWrap = document.querySelector('.magnetic-wrap');
+            const magneticBtn = document.querySelector('.btn-ig-huge');
+            
+            if(magneticWrap && magneticBtn) {
+                magneticWrap.addEventListener('mousemove', (e) => {
+                    const rect = magneticWrap.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    magneticBtn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+                });
+                magneticWrap.addEventListener('mouseleave', () => {
+                    magneticBtn.style.transform = `translate(0px, 0px)`;
+                });
+            }
+        }
+
+        // Scroll Observer for Fade-ups
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('show');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
+
+        document.querySelectorAll('.anim-up, .anim-fade').forEach(el => observer.observe(el));
+
+        // QR Download function
+        function downloadQR() {
+            const link = document.createElement('a');
+            link.href = 'Images/pay.png';
+            link.download = 'Soham_Payment_QR.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>

@@ -2,483 +2,357 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DZYNSBYSOHAM | Portfolio</title>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
         :root {
-            /* BRAND PALETTE */
-            --brand-blue: #0055FF; 
-            --bg: #000000;         
-            --text-main: #ffffff;  
-            --text-muted: #86868b; 
+            /* COLOR PALETTE - MINIMAL & PREMIUM RED ACCENT */
+            --bg-left: #F4F4F5;    /* Zinc 100 - Soft light grey */
+            --bg-right: #FFFFFF;   /* Pure White */
+            --text-dark: #09090B;  /* Zinc 950 - Near black */
+            --text-muted: #71717A; /* Zinc 500 - Soft grey */
+            --accent: #E60000;     /* Premium Striking Red */
+            --border: #E4E4E7;     /* Zinc 200 - Very subtle lines */
             
-            /* Glassmorphism */
-            --apple-glass: rgba(255, 255, 255, 0.03);
-            --apple-border: rgba(255, 255, 255, 0.08);
-            
-            /* Physics */
-            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
             --smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            --snap: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg);
-            color: var(--text-main);
-            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-right);
+            color: var(--text-dark);
+            font-family: 'DM Sans', sans-serif;
             overflow-x: hidden;
-            width: 100%;
-            position: relative;
             -webkit-font-smoothing: antialiased;
+            display: flex;
         }
 
-        @media (hover: hover) and (pointer: fine) {
-            * { cursor: none; }
+        /* --- SUBTLE TEXTURE --- */
+        .texture {
+            position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.03;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
 
-        /* --- GEN Z FILM GRAIN --- */
-        .grain {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 9999; opacity: 0.6;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+        /* --- ASYMMETRICAL SPLIT LAYOUT --- */
+        
+        /* LEFT PANE: Sticky Intro */
+        .pane-left {
+            width: 40%; height: 100vh; background-color: var(--bg-left);
+            position: sticky; top: 0; display: flex; flex-direction: column;
+            justify-content: space-between; padding: 80px 60px;
+            border-right: 1px solid var(--border);
         }
 
-        /* --- AMBIENT BLUE GLOW --- */
-        .bg-glow {
-            position: fixed; top: -20vh; left: 50%;
-            transform: translateX(-50%); width: 100vw; height: 50vh;
-            background: radial-gradient(circle, rgba(0, 85, 255, 0.15) 0%, rgba(0,0,0,0) 60%);
-            z-index: -1; filter: blur(80px);
-            animation: breathe 8s infinite alternate ease-in-out;
-            pointer-events: none;
+        .brand-label {
+            font-family: 'Space Grotesk', sans-serif; font-size: 0.85rem; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 2px; color: var(--accent);
+            display: flex; align-items: center; gap: 10px; margin-bottom: 40px;
         }
-        @keyframes breathe {
-            0% { transform: translateX(-50%) scale(1); opacity: 0.5; }
-            100% { transform: translateX(-50%) scale(1.2); opacity: 1; }
+        .brand-label::before { content: ''; width: 30px; height: 2px; background: var(--accent); }
+
+        .title {
+            font-family: 'Space Grotesk', sans-serif; font-size: clamp(3rem, 5vw, 4.5rem);
+            font-weight: 700; line-height: 1; letter-spacing: -2px; margin-bottom: 24px;
         }
 
-        /* --- BRANDED CURSOR (Desktop Only) --- */
-        .cursor-dot {
-            position: fixed; width: 12px; height: 12px;
-            background: var(--brand-blue); border-radius: 50%;
-            pointer-events: none; z-index: 999999; /* FIXED: Increased z-index */
-            transform: translate(-50%, -50%);
-            transition: width 0.3s var(--spring), height 0.3s var(--spring), background 0.3s;
+        .subtitle {
+            font-size: 1.1rem; color: var(--text-muted); line-height: 1.6; max-width: 400px;
+            margin-bottom: 40px;
         }
-        .cursor-ring {
-            position: fixed; width: 40px; height: 40px;
-            border: 1.5px solid rgba(0, 85, 255, 0.5); border-radius: 50%;
-            pointer-events: none; z-index: 999998; /* FIXED: Increased z-index */
-            transform: translate(-50%, -50%);
-            transition: all 0.15s ease-out;
-        }
-        .cursor-hover .cursor-dot {
-            width: 70px; height: 70px; background: rgba(0, 85, 255, 0.15); 
-            backdrop-filter: blur(4px); border: 1px solid rgba(0, 85, 255, 0.3);
-        }
-        .cursor-hover .cursor-ring { width: 0; height: 0; opacity: 0; }
 
-        /* --- DYNAMIC ISLAND NAV --- */
-        nav {
-            position: fixed; top: 20px; left: 50%;
-            transform: translateX(-50%);
-            background: rgba(10, 10, 10, 0.7);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border: 1px solid var(--apple-border);
-            padding: 12px 24px; border-radius: 100px;
-            display: flex; align-items: center; gap: 20px;
-            z-index: 1000; box-shadow: 0 10px 30px rgba(0, 85, 255, 0.1);
-            transition: all 0.4s var(--spring); width: max-content; max-width: 90vw;
+        /* Stats in Sidebar */
+        .stats-band {
+            display: flex; gap: 30px; margin-bottom: 40px;
+            padding-top: 30px; border-top: 1px solid var(--border);
         }
-        nav:hover {
-            padding: 12px 32px; background: rgba(20, 20, 20, 0.9);
-            border-color: rgba(0, 85, 255, 0.3);
+        .stat-item h3 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; color: var(--text-dark); line-height: 1; }
+        .stat-item p { font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); letter-spacing: 1px; font-weight: 700; margin-top: 5px; }
+
+        .social-link {
+            display: inline-flex; align-items: center; gap: 12px;
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; font-weight: 700;
+            color: var(--text-dark); text-decoration: none; transition: color 0.3s ease;
         }
-        .nav-brand { font-family: 'Syne', sans-serif; font-weight: 800; }
-        .nav-status {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 12px; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 1px; color: var(--brand-blue); white-space: nowrap;
+        .social-link:hover { color: var(--accent); }
+
+        /* RIGHT PANE: Scrolling Content */
+        .pane-right {
+            width: 60%; min-height: 100vh; padding: 80px 60px;
         }
+
+        .feed-header {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1rem; color: var(--text-muted);
+            text-transform: uppercase; letter-spacing: 1px; margin-bottom: 40px;
+            padding-bottom: 20px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        
         .status-dot {
-            width: 6px; height: 6px; background: var(--brand-blue); border-radius: 50%;
-            animation: pulse 2s infinite;
+            display: inline-block; width: 8px; height: 8px; background: var(--accent);
+            border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite;
         }
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(0, 85, 255, 0.6); }
-            70% { box-shadow: 0 0 0 8px rgba(0, 85, 255, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(0, 85, 255, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(230, 0, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(230, 0, 0, 0); }
         }
 
-        /* --- HERO --- */
-        .hero {
-            position: relative; width: 100%; min-height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            text-align: center; padding: 0 5%; z-index: 1;
-        }
-        .hero-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2.5rem, 10vw, 8rem);
-            font-weight: 800; line-height: 0.9;
-            text-transform: uppercase; margin-bottom: 24px;
-        }
-        .hero-title .highlight {
-            color: transparent; -webkit-text-stroke: 2px var(--brand-blue);
-            position: relative; display: inline-block;
-            transition: all 0.3s var(--smooth);
-        }
-        .hero-title:hover .highlight {
-            color: var(--brand-blue); -webkit-text-stroke: 0px var(--brand-blue);
-            transform: scale(1.05) rotate(-2deg);
-        }
-        .hero-subtitle {
-            font-size: clamp(1rem, 2vw, 1.4rem); color: var(--text-muted); 
-            max-width: 600px; line-height: 1.5; padding: 0 15px;
-        }
-
-        /* --- STATS BAND --- */
-        .stats-band {
-            display: flex; justify-content: center; align-items: center; gap: clamp(2rem, 5vw, 5rem);
-            border-top: 1px solid var(--apple-border); border-bottom: 1px solid var(--apple-border);
-            padding: 2rem 5%; margin-bottom: 5rem;
-            background: linear-gradient(90deg, transparent, rgba(0, 85, 255, 0.05), transparent);
-        }
-        .stat-item { text-align: center; }
-        .stat-item h3 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 2.5rem); color: var(--brand-blue); }
-        .stat-item p { font-size: 0.8rem; text-transform: uppercase; color: var(--text-main); letter-spacing: 1px; font-weight: 600; margin-top: 5px; }
-
-        /* --- PERFECT INTERLOCKING GRID --- */
-        .section-header {
-            text-align: center; margin-bottom: 3rem;
-            font-family: 'Syne', sans-serif; font-size: clamp(2rem, 5vw, 3rem); text-transform: uppercase;
-        }
-        
+        /* --- FLAT & CLEAN PORTFOLIO CARDS --- */
         .works-grid {
-            display: grid; 
-            grid-template-columns: repeat(12, 1fr); 
-            grid-auto-rows: 280px; 
-            gap: 20px;
-            padding: 0 5vw 5rem; 
-            max-width: 1400px; 
-            margin: 0 auto;
-        }
-        
-        .work-card {
-            display: block; text-decoration: none;
-            border-radius: 20px; overflow: hidden; position: relative;
-            border: 1px solid var(--apple-border); transform-origin: center;
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px;
+            margin-bottom: 80px;
         }
 
-        .item-1 { grid-column: 1 / 9; grid-row: 1 / 2; }   
-        .item-2 { grid-column: 9 / 13; grid-row: 1 / 3; }  
-        .item-3 { grid-column: 1 / 5; grid-row: 2 / 3; }   
-        .item-4 { grid-column: 5 / 9; grid-row: 2 / 3; }   
-        .item-5 { grid-column: 1 / 5; grid-row: 3 / 5; }   
-        .item-6 { grid-column: 5 / 13; grid-row: 3 / 4; }  
-        .item-7 { grid-column: 5 / 9; grid-row: 4 / 5; }   
-        .item-8 { grid-column: 9 / 13; grid-row: 4 / 5; }  
-
-        @media (max-width: 1200px) { .works-grid { grid-auto-rows: 240px; } }
-        @media (max-width: 900px) { .works-grid { grid-auto-rows: 180px; gap: 16px; } }
-
-        .work-img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-            transition: transform 0.6s var(--smooth);
+        .work-block { 
+            display: flex; flex-direction: column; text-decoration: none; 
+            cursor: pointer;
+            transition: transform 0.4s var(--smooth);
+            transform-origin: center;
+            -webkit-tap-highlight-color: transparent;
         }
-        
-        .work-card::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0, 85, 255, 0.4), transparent);
-            opacity: 0; transition: opacity 0.4s var(--smooth); mix-blend-mode: overlay; z-index: 1;
-        }
-        .work-card:hover::after { opacity: 1; }
 
-        .work-info {
-            position: absolute; bottom: 0; left: 0; width: 100%; z-index: 2;
-            padding: 30px; background: linear-gradient(to top, rgba(0,0,0,0.95), transparent);
-            transform: translateY(20px); opacity: 0;
+        /* NEW MINIMAL CLICK ANIMATION */
+        .work-block.clicked {
+            transform: scale(0.98) translateY(2px); /* Barely noticeable micro-press */
+            transition: transform 0.1s var(--snap);
+        }
+        .work-block.clicked .image-container::after {
+            opacity: 0.15; /* The shutter flash */
+            transition: opacity 0.05s ease-in; 
+        }
+        .work-block.clicked .image-container {
+            border-color: #d4d4d8; /* Very subtle border darkening */
+        }
+
+        .image-container {
+            position: relative; /* Crucial for the flash overlay */
+            width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 20px;
+            background: #f0f0f0; border: 1px solid var(--border); aspect-ratio: 16/9;
             transition: all 0.4s var(--smooth);
         }
-        .work-card:hover .work-info { transform: translateY(0); opacity: 1; }
-        .work-info h3 { font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 5px; color: var(--text-main); }
-        .work-info p { color: var(--brand-blue); font-size: 0.85rem; text-transform: uppercase; font-weight: 700; letter-spacing: 1px; }
+        
+        /* The flash overlay setup */
+        .image-container::after {
+            content: ''; position: absolute; inset: 0; background: #000;
+            opacity: 0; pointer-events: none; transition: opacity 0.4s ease-out; z-index: 10;
+        }
+
+        .work-block.poster .image-container { aspect-ratio: 4/5; }
+        
+        .image-container img {
+            width: 100%; height: 100%; display: block; object-fit: cover;
+            transition: transform 0.6s var(--smooth);
+        }
+        .work-block:hover .image-container img { transform: scale(1.03); }
+
+        .block-meta { display: flex; flex-direction: column; transition: transform 0.4s var(--smooth); }
+        
+        .block-title {
+            font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700;
+            color: var(--text-dark); line-height: 1.2; margin-bottom: 4px;
+            transition: color 0.3s ease;
+        }
+        .work-block:hover .block-title { color: var(--accent); }
+        
+        .block-subtitle {
+            font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase;
+            font-weight: 700; letter-spacing: 0.5px;
+        }
 
         /* --- MARQUEE --- */
         .marquee {
-            background: transparent; color: transparent; -webkit-text-stroke: 1px var(--apple-border);
-            padding: 20px 0; overflow: hidden; white-space: nowrap;
-            transform: rotate(-2deg) scale(1.05); margin: 5rem 0;
-            border-top: 1px solid var(--apple-border); border-bottom: 1px solid var(--apple-border);
-            transition: all 0.3s ease;
+            background: var(--text-dark); color: #fff; padding: 20px 0; overflow: hidden; white-space: nowrap;
+            margin: 4rem 0; border-radius: 12px;
         }
-        .marquee:hover {
-            color: var(--brand-blue); -webkit-text-stroke: 0px; background: rgba(0, 85, 255, 0.05);
-        }
-        .marquee-inner { display: flex; animation: scroll 15s linear infinite; font-weight: 800; font-family: 'Syne'; font-size: 2rem; text-transform: uppercase; }
+/* Changed from 15s to 8s */
+.marquee-inner { display: flex; animation: scroll 4s linear infinite; font-weight: 700; font-family: 'Space Grotesk'; font-size: 1.5rem; text-transform: uppercase; }
         .marquee span { padding: 0 2rem; }
         @keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
 
-        /* --- CONTACT CTA --- */
-        .contact { text-align: center; padding: 5rem 5% 10rem; display: flex; flex-direction: column; align-items: center; }
-        .contact h2 { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 6vw, 5rem); margin-bottom: 3rem; text-transform: uppercase; }
-        .magnetic-wrap { display: inline-block; padding: 2rem; margin: -2rem; }
-        .btn-ig-huge {
-            padding: 24px 64px; border-radius: 100px; font-weight: 800;
-            text-decoration: none; display: inline-flex; align-items: center; justify-content: center;
-            background: var(--brand-blue); color: var(--text-main);
-            font-family: 'Syne', sans-serif; font-size: clamp(1.2rem, 3vw, 1.5rem); text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(0, 85, 255, 0.2);
-            transition: transform 0.2s ease-out, box-shadow 0.3s; will-change: transform; text-align: center;
-        }
-        .btn-ig-huge:hover { box-shadow: 0 20px 50px rgba(0, 85, 255, 0.5); }
-
-        /* --- BRANDED DIET COKE WIDGET & BADGE --- */
-        .coke-wrapper {
-            position: fixed; bottom: 24px; right: 24px; z-index: 100;
-            display: flex; flex-direction: column; align-items: flex-end;
-        }
-
-        .tap-here-badge {
-            background: var(--brand-blue); color: #fff;
-            font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
-            padding: 6px 12px; border-radius: 20px; margin-bottom: 10px; margin-right: 5px;
-            border: 1px solid rgba(255,255,255,0.2);
-            box-shadow: 0 4px 15px rgba(0, 85, 255, 0.4);
-            animation: bounce-badge 2s infinite ease-in-out;
-            pointer-events: none;
-            position: relative;
-        }
-        /* Tiny arrow pointing down to the Coke can */
-        .tap-here-badge::after {
-            content: ''; position: absolute; bottom: -4px; right: 15px;
-            width: 8px; height: 8px; background: var(--brand-blue);
-            transform: rotate(45deg); border-bottom: 1px solid rgba(255,255,255,0.2); border-right: 1px solid rgba(255,255,255,0.2);
-        }
-
-        @keyframes bounce-badge {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-5px); }
-        }
-
-        .coke-widget {
-            background: rgba(10,10,10,0.8); backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 85, 255, 0.3); border-radius: 100px;
-            padding: 10px; display: flex; align-items: center; gap: 12px;
-            overflow: hidden; width: 62px; height: 62px;
-            transition: all 0.5s var(--spring); cursor: pointer;
-            box-shadow: 0 5px 20px rgba(0, 85, 255, 0.15);
-        }
+        /* --- EXACT DIET COKE WIDGET (Red Theme) --- */
+        .coke-wrapper { position: fixed; bottom: 24px; right: 24px; z-index: 100; display: flex; flex-direction: column; align-items: flex-end; }
+        .tap-here-badge { background: var(--accent); color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 12px; border-radius: 20px; margin-bottom: 10px; margin-right: 5px; box-shadow: 0 4px 15px rgba(230, 0, 0, 0.3); animation: bounce-badge 2s infinite ease-in-out; pointer-events: none; position: relative; font-family: 'DM Sans', sans-serif; }
+        .tap-here-badge::after { content: ''; position: absolute; bottom: -4px; right: 15px; width: 8px; height: 8px; background: var(--accent); transform: rotate(45deg); }
+        @keyframes bounce-badge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
         
-        .coke-icon { 
-            display: flex; align-items: center; justify-content: center; 
-            min-width: 40px; height: 40px; 
-            background: rgba(255,255,255,0.05); border-radius: 50%;
-        }
-        .coke-text { font-size: 14px; font-weight: 600; white-space: nowrap; opacity: 0; transition: opacity 0.3s; color: var(--text-main); }
-        
-        .coke-widget:hover { width: 240px; padding: 10px 24px 10px 10px; background: rgba(0, 85, 255, 0.1); }
+        .coke-widget { background: #ffffff; border: 1px solid var(--border); border-radius: 100px; padding: 10px; display: flex; align-items: center; gap: 12px; overflow: hidden; width: 62px; height: 62px; transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); cursor: pointer; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+        .coke-icon { display: flex; align-items: center; justify-content: center; min-width: 40px; height: 40px; background: var(--bg-left); border-radius: 50%; }
+        .coke-text { font-size: 14px; font-weight: 700; white-space: nowrap; opacity: 0; transition: opacity 0.3s; color: var(--text-dark); font-family: 'DM Sans', sans-serif;}
+        .coke-widget:hover { width: 220px; padding: 10px 24px 10px 10px; background: #fafafa; }
         .coke-widget:hover .coke-text { opacity: 1; transition-delay: 0.1s; }
+        .coke-widget:hover .coke-svg { animation: float-doodle 1.5s ease-in-out infinite alternate; }
+        @keyframes float-doodle { 0% { transform: translateY(0) rotate(-2deg); } 100% { transform: translateY(-3px) rotate(4deg); } }
         
-        .coke-widget:hover .coke-svg {
-            animation: float-doodle 1.5s ease-in-out infinite alternate;
-        }
-        @keyframes float-doodle {
-            0% { transform: translateY(0) rotate(-2deg); }
-            100% { transform: translateY(-3px) rotate(4deg); }
-        }
-
-        /* --- APPLE iOS STYLE QR MODAL --- */
-        .qr-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            z-index: 99999; display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s var(--smooth);
-        }
+        /* Exact QR Modal */
+        .qr-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.4s ease; }
         .qr-overlay.active { opacity: 1; pointer-events: all; }
-        
-        .qr-modal {
-            background: rgba(15, 15, 15, 0.85); border: 1px solid rgba(0, 85, 255, 0.3);
-            border-radius: 32px; padding: 40px 30px; text-align: center;
-            transform: scale(0.9) translateY(30px); transition: all 0.5s var(--spring);
-            position: relative; width: 90vw; max-width: 380px;
-            box-shadow: 0 25px 60px rgba(0, 85, 255, 0.2);
-        }
+        .qr-modal { background: #ffffff; border: 1px solid var(--border); border-radius: 24px; padding: 40px 30px; text-align: center; transform: scale(0.95) translateY(20px); transition: all 0.4s ease; position: relative; width: 90vw; max-width: 380px; box-shadow: 0 25px 50px rgba(0,0,0,0.2); }
         .qr-overlay.active .qr-modal { transform: scale(1) translateY(0); }
-        
-        .close-btn {
-            position: absolute; top: 15px; right: 20px; background: transparent; border: none;
-            color: var(--text-muted); font-size: 28px; cursor: pointer; transition: color 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-        .close-btn:hover { color: var(--text-main); }
-        
-        .qr-modal h3 { font-family: 'Syne', sans-serif; font-size: 1.8rem; margin-bottom: 8px; color: var(--text-main); }
-        .qr-modal p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.4; }
-        
-        .qr-image-wrapper {
-            background: #fff; padding: 15px; border-radius: 20px; display: inline-block;
-            margin-bottom: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
+        .close-btn { position: absolute; top: 15px; right: 20px; background: transparent; border: none; color: var(--text-muted); font-size: 28px; cursor: pointer; transition: color 0.3s; }
+        .close-btn:hover { color: var(--text-dark); }
+        .qr-modal h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; margin-bottom: 8px; color: var(--text-dark); }
+        .qr-modal p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; line-height: 1.5; }
+        .qr-image-wrapper { background: #f4f4f5; padding: 15px; border-radius: 16px; display: inline-block; margin-bottom: 24px; border: 1px solid var(--border); }
         .qr-image-wrapper img { width: 180px; height: 180px; display: block; border-radius: 8px; }
-        
-        .btn-download {
-            background: var(--brand-blue); color: #fff; border: none; padding: 16px 32px;
-            border-radius: 100px; font-weight: 600; font-size: 1rem; cursor: pointer; width: 100%;
-            transition: transform 0.2s, box-shadow 0.2s; font-family: 'Inter', sans-serif; text-transform: uppercase;
-        }
-        .btn-download:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0, 85, 255, 0.4); }
+        .btn-download { background: var(--accent); color: #fff; border: none; padding: 14px 32px; border-radius: 100px; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; font-family: 'Space Grotesk', sans-serif; text-transform: uppercase; transition: background 0.3s; }
+        .btn-download:hover { background: #cc0000; }
 
-        /* --- ANIMATION CLASSES --- */
-        .anim-up { opacity: 0; transform: translateY(40px); transition: opacity 0.8s var(--smooth), transform 0.8s var(--smooth); }
-        .anim-up.show { opacity: 1; transform: translateY(0); }
-        .anim-fade { opacity: 0; transform: translateY(30px); transition: all 0.8s var(--smooth); }
-        .anim-fade.show { opacity: 1; transform: translateY(0); }
-
-        /* =========================================
-           MOBILE LOGIC
-           ========================================= */
-        @media (max-width: 768px) {
-            .cursor-dot, .cursor-ring { display: none !important; }
-            nav { padding: 10px 16px; gap: 10px; width: 90%; justify-content: space-between; }
-            .nav-brand { font-size: 0.9rem; } .nav-status { font-size: 10px; }
-            .hero-title { font-size: 3rem; }
-            .stats-band { flex-direction: column; gap: 2rem; padding: 3rem 5%; }
-            .works-grid { display: flex; flex-direction: column; gap: 20px; padding-bottom: 2rem; }
-            .work-card { width: 100%; border-radius: 16px; }
-            .work-card.thumb { aspect-ratio: 16/9; }
-            .work-card.poster { aspect-ratio: 4/5; }
-            .work-info { opacity: 1; transform: translateY(0); padding: 20px; background: linear-gradient(to top, rgba(0,0,0,0.95) 10%, transparent); }
-            .marquee { margin: 2rem 0; padding: 15px 0; }
-            .contact { padding: 2rem 5% 8rem; }
-            .contact h2 { margin-bottom: 2rem; }
-            .magnetic-wrap { display: block; padding: 0; margin: 0; width: 100%; }
-            .btn-ig-huge { width: 100%; padding: 20px; font-size: 1.1rem; }
-            
-            /* Make wrapper fit mobile spacing */
-            .coke-wrapper { bottom: 16px; right: 16px; }
-            .qr-modal { padding: 30px 20px; }
-            .qr-image-wrapper img { width: 150px; height: 150px; }
+        /* --- MOBILE RESPONSIVENESS --- */
+        @media (max-width: 900px) {
+            body { flex-direction: column; }
+            .pane-left { width: 100%; height: auto; position: relative; padding: 60px 5% 40px; border-right: none; border-bottom: 1px solid var(--border); }
+            .pane-right { width: 100%; min-height: auto; padding: 40px 5% 100px; }
+            .works-grid { grid-template-columns: 1fr; }
+            .stats-band { justify-content: space-between; gap: 10px; }
+            .coke-wrapper { bottom: 16px; right: 16px; transform: scale(0.9); transform-origin: bottom right; }
         }
     </style>
 </head>
 <body>
 
-    <div class="grain"></div>
-    <div class="bg-glow"></div>
+    <div class="texture"></div>
 
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
-
-    <nav class="hover-target">
-        <div class="nav-brand">DZYNSBYSOHAM</div>
-        <div class="nav-status"><div class="status-dot"></div> OPEN FOR WORK</div>
-    </nav>
-
-    <section class="hero">
-        <h1 class="hero-title anim-up hover-target" style="transition-delay: 0.1s;">
-            VISUALS THAT<br><span class="highlight">GET CLICKS.</span>
-        </h1>
-        <p class="hero-subtitle anim-up" style="transition-delay: 0.2s;">
-            Specializing in high-performance thumbnails and creative design for crypto, gaming, and finance creators.
-        </p>
-    </section>
-
-    <div class="stats-band anim-up">
-        <div class="stat-item"><h3>4+</h3><p>Years Exp</p></div>
-        <div class="stat-item"><h3>500+</h3><p>Thumbnails</p></div>
-        <div class="stat-item"><h3>100%</h3><p>Satisfaction</p></div>
-    </div>
-
-    <h2 class="section-header anim-up">Selected Works</h2>
-    
-    <section class="works-grid">
-        <a href="https://youtu.be/g4vp9gd84wA" target="_blank" class="work-card item-1 thumb anim-fade hover-target">
-            <img src="Images/thumbnail1.jpg" alt="Gaming Thumbnail" class="work-img">
-            <div class="work-info"><h3>Gaming Thumbnail</h3><p>Thumbnail Design</p></div>
-        </a>
-        <a href="#" class="work-card item-2 poster anim-fade hover-target">
-            <img src="Images/poster1.jpg" alt="Brand Poster" class="work-img">
-            <div class="work-info"><h3>Show Poster</h3><p>Poster Design</p></div>
-        </a>
-        <a href="#" class="work-card item-3 thumb anim-fade hover-target">
-            <img src="Images/thumbnail2.jpg" alt="Cricket Thumbnail" class="work-img">
-            <div class="work-info"><h3>Cricket Thumbnail</h3><p>Thumbnail Design</p></div>
-        </a>
-        <a href="#" class="work-card item-4 thumb anim-fade hover-target">
-            <img src="Images/thumbnail3.jpg" alt="Rap Reaction" class="work-img">
-            <div class="work-info"><h3>Rap Reaction</h3><p>Thumbnail Design</p></div>
-        </a>
-        <a href="#" class="work-card item-5 poster anim-fade hover-target">
-            <img src="Images/poster2.jpg" alt="Reel Thumbnail" class="work-img">
-            <div class="work-info"><h3>Coding Thumbnail</h3><p>Reel Thumbnail</p></div>
-        </a>
-        <a href="https://youtu.be/z03QAWcUMTw" target="_blank" class="work-card item-6 thumb anim-fade hover-target">
-            <img src="Images/thumbnail4.jpg" alt="Gaming Thumbnail" class="work-img">
-            <div class="work-info"><h3>Gaming Thumbnail</h3><p>Thumbnail Design</p></div>
-        </a>
-        <a href="#" class="work-card item-7 thumb anim-fade hover-target">
-            <img src="Images/thumbnail5.jpg" alt="Trading Thumbnail" class="work-img">
-            <div class="work-info"><h3>Trading Thumbnail</h3><p>Thumbnail Design</p></div>
-        </a>
-        <a href="#" class="work-card item-8 thumb anim-fade hover-target">
-            <img src="Images/thumbnail6.jpg" alt="Conceptual Video" class="work-img">
-            <div class="work-info"><h3>Documentary THumbnail</h3><p>Thumbnail Design</p></div>
-        </a>
-    </section>
-
-    <div class="marquee hover-target">
-        <div class="marquee-inner">
-            <span>DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM ///</span>
-            <span>DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM /// DZYNSBYSOHAM ///</span>
+    <aside class="pane-left">
+        <div>
+            <div class="brand-label">DZYNSBYSOHAM</div>
+            <h1 class="title">Visuals That<br>Get Clicks.</h1>
+            <p class="subtitle">
+                Specializing in high-performance thumbnails and creative design for crypto, gaming, and finance creators.
+            </p>
+            
+            <div class="stats-band">
+                <div class="stat-item"><h3>4+</h3><p>Years Exp</p></div>
+                <div class="stat-item"><h3>500+</h3><p>Thumbnails</p></div>
+                <div class="stat-item"><h3>100%</h3><p>Satisfaction</p></div>
+            </div>
         </div>
-    </div>
-
-    <section class="contact anim-up">
-        <h2>Let's Secure<br>The Bag.</h2>
-        <div class="magnetic-wrap anim-up" style="transition-delay: 0.1s;">
-            <a href="https://instagram.com/dzynsbysoham" target="_blank" class="btn-ig-huge hover-target">
-                Hit My DMs on IG
+        
+        <div>
+            <a href="https://instagram.com/dzynsbysoham" target="_blank" class="social-link">
+                <i class="fa-brands fa-instagram"></i> @dzynsbysoham
             </a>
         </div>
-    </section>
+    </aside>
+
+    <main class="pane-right">
+        <div class="feed-header">
+            <span>Selected Works</span>
+            <span style="color: var(--accent); font-weight: 700; font-size: 0.8rem;">
+                <span class="status-dot"></span> OPEN FOR WORK
+            </span>
+        </div>
+
+        <div class="works-grid">
+            <div class="work-block">
+                <div class="image-container">
+                    <img src="Images/thumbnail1.jpg" alt="Gaming Thumbnail">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">FIFA - Football Gaming</h2>
+                    <p class="block-subtitle">Thumbnail Design</p>
+                </div>
+            </div>
+
+            <div class="work-block poster">
+                <div class="image-container">
+                    <img src="Images/poster1.jpg" alt="Brand Poster">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Event Creative</h2>
+                    <p class="block-subtitle">Poster Design</p>
+                </div>
+            </div>
+
+            <div class="work-block">
+                <div class="image-container">
+                    <img src="Images/thumbnail2.jpg" alt="Aram Se Dost">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Wt20 - Cricket Watch Along</h2>
+                    <p class="block-subtitle">Thumbnail Design</p>
+                </div>
+            </div>
+
+            <div class="work-block">
+                <div class="image-container">
+                    <img src="Images/thumbnail3.jpg" alt="Rap">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Rap Reaction</h2>
+                    <p class="block-subtitle">Thumbnail Design</p>
+                </div>
+            </div>
+
+            <div class="work-block poster">
+                <div class="image-container">
+                    <img src="Images/poster2.jpg" alt="Reel">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Reel Cover</h2>
+                    <p class="block-subtitle">Poster Design</p>
+                </div>
+            </div>
+
+            <div class="work-block">
+                <div class="image-container">
+                    <img src="Images/thumbnail4.jpg" alt="Horror">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Horror Gameplay</h2>
+                    <p class="block-subtitle">Thumbnail Design</p>
+                </div>
+            </div>
+
+            <div class="work-block">
+                <div class="image-container">
+                    <img src="Images/thumbnail5.jpg" alt="Trading">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Trading / Stock Market</h2>
+                    <p class="block-subtitle">Thumbnail Design</p>
+                </div>
+            </div>
+
+            <div class="work-block">
+                <div class="image-container">
+                    <img src="Images/thumbnail6.jpg" alt="Reaction">
+                </div>
+                <div class="block-meta">
+                    <h2 class="block-title">Show's Reaction</h2>
+                    <p class="block-subtitle">Thumbnail Design</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="marquee">
+            <div class="marquee-inner">
+                <span>GOATED DESIGNS /// BEST QUALITY /// GET YOURS NOW ///</span>
+                <span>GOATED DESIGNS /// BEST QUALITY /// GET YOURS NOW ///</span>
+            </div>
+        </div>
+    </main>
 
     <div class="coke-wrapper">
         <div class="tap-here-badge">Tap Here</div>
-        
-        <div class="coke-widget hover-target" onclick="openQRModal()" title="Buy me a Diet Coke">
+        <div class="coke-widget" onclick="openQRModal()" title="Buy me a Diet Coke">
             <div class="coke-icon">
                 <svg class="coke-svg" width="28" height="38" viewBox="0 0 60 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                            <stop offset="0%" stop-color="#cbd5e1"/>
-                            <stop offset="50%" stop-color="#f8fafc"/>
-                            <stop offset="100%" stop-color="#94a3b8"/>
-                        </linearGradient>
-                    </defs>
+                    <defs><linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#cbd5e1"/><stop offset="50%" stop-color="#f8fafc"/><stop offset="100%" stop-color="#94a3b8"/></linearGradient></defs>
                     <path d="M12 15 C12 12 48 12 48 15 L48 85 C48 88 12 88 12 85 Z" fill="url(#silverGrad)" stroke="#ffffff" stroke-width="2"/>
                     <path d="M10 12 C10 8 50 8 50 12 C50 16 10 16 10 12 Z" fill="#e2e8f0" stroke="#ffffff" stroke-width="2"/>
                     <path d="M12 85 C12 82 48 82 48 85 C48 88 12 88 12 85 Z" fill="#94a3b8"/>
                     <path d="M26 10 h8 v3 h-8 z" fill="#475569" rx="1"/>
-                    <g transform="translate(22, 45) rotate(-90)">
-                        <text x="0" y="0" font-family="'Brush Script MT', 'Comic Sans MS', cursive" font-size="14" fill="#000000" font-weight="bold">Diet</text>
-                    </g>
-                    <g transform="translate(42, 80) rotate(-90)">
-                        <text x="0" y="0" font-family="Georgia, 'Times New Roman', serif" font-size="28" fill="#0055FF" font-weight="900" letter-spacing="-1">Coke</text>
-                    </g>
-                    <circle cx="18" cy="30" r="1.5" fill="#ffffff"/>
-                    <circle cx="42" cy="50" r="2" fill="#ffffff"/>
-                    <circle cx="20" cy="70" r="1.5" fill="#ffffff"/>
+                    <g transform="translate(22, 45) rotate(-90)"><text x="0" y="0" font-family="'Brush Script MT', 'Comic Sans MS', cursive" font-size="14" fill="#000000" font-weight="bold">Diet</text></g>
+                    <g transform="translate(42, 80) rotate(-90)"><text x="0" y="0" font-family="Georgia, 'Times New Roman', serif" font-size="28" fill="#E60000" font-weight="900" letter-spacing="-1">Coke</text></g>
+                    <circle cx="18" cy="30" r="1.5" fill="#ffffff"/><circle cx="42" cy="50" r="2" fill="#ffffff"/><circle cx="20" cy="70" r="1.5" fill="#ffffff"/>
                 </svg>
             </div>
             <div class="coke-text">Buy me a Diet Coke</div>
@@ -490,108 +364,30 @@
             <button class="close-btn" onclick="closeQRModal(event)">&times;</button>
             <h3>Buy me a Diet Coke</h3>
             <p>Scan the QR code below to support my creative work!</p>
-            
-            <div class="qr-image-wrapper">
-                <img src="Images/pay.png" alt="Payment QR Code">
-            </div>
-            
+            <div class="qr-image-wrapper"><img src="Images/pay.png" alt="Payment QR Code"></div>
             <button class="btn-download" onclick="downloadQR()">Download Image</button>
         </div>
     </div>
 
     <script>
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.querySelectorAll('.hero .anim-up').forEach(el => el.classList.add('show'));
-                document.querySelector('.stats-band').classList.add('show');
-            }, 100);
+        // EXACT QR Modal Logic
+        function openQRModal() { document.getElementById('qrOverlay').classList.add('active'); }
+        function closeQRModal(e) { if (e.target.id === 'qrOverlay' || e.target.classList.contains('close-btn')) { document.getElementById('qrOverlay').classList.remove('active'); } }
+        function downloadQR() { const link = document.createElement('a'); link.href = 'Images/pay.png'; link.download = 'Soham_Payment_QR.png'; document.body.appendChild(link); link.click(); document.body.removeChild(link); }
+
+        // --- PREMIUM CAMERA FLASH CLICK ANIMATION ---
+        document.querySelectorAll('.work-block').forEach(block => {
+            block.addEventListener('click', function() {
+                // Add class to trigger CSS transformations
+                this.classList.add('clicked');
+                
+                // Allow the CSS transition to play out (200ms) before removing the class
+                // This gives enough time for the "shutter" flash to be visible
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 200); 
+            });
         });
-
-        // Modal Logic
-        function openQRModal() {
-            document.getElementById('qrOverlay').classList.add('active');
-        }
-
-        function closeQRModal(e) {
-            // Close if they click the overlay background OR the close button
-            if (e.target.id === 'qrOverlay' || e.target.classList.contains('close-btn')) {
-                document.getElementById('qrOverlay').classList.remove('active');
-            }
-        }
-
-        function downloadQR() {
-            const link = document.createElement('a');
-            link.href = 'Images/pay.png';
-            link.download = 'Soham_Payment_QR.png';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
-
-        if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-            const dot = document.querySelector('.cursor-dot');
-            const ring = document.querySelector('.cursor-ring');
-            let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-            let ringX = mouseX, ringY = mouseY;
-
-            window.addEventListener('mousemove', (e) => {
-                mouseX = e.clientX; mouseY = e.clientY;
-                dot.style.left = `${mouseX}px`; dot.style.top = `${mouseY}px`;
-            });
-
-            function renderRing() {
-                ringX += (mouseX - ringX) * 0.2; 
-                ringY += (mouseY - ringY) * 0.2;
-                ring.style.left = `${ringX}px`; ring.style.top = `${ringY}px`;
-                requestAnimationFrame(renderRing);
-            }
-            renderRing();
-
-            document.querySelectorAll('.hover-target, a').forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-            });
-
-            document.querySelectorAll('.work-card').forEach(card => {
-                card.addEventListener('mousemove', e => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    const rotateX = ((y - (rect.height / 2)) / (rect.height / 2)) * -5;
-                    const rotateY = ((x - (rect.width / 2)) / (rect.width / 2)) * 5;
-                    card.querySelector('.work-img').style.transform = `scale(1.1) perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                });
-                card.addEventListener('mouseleave', () => {
-                    card.querySelector('.work-img').style.transform = `scale(1) perspective(1000px) rotateX(0deg) rotateY(0deg)`;
-                });
-            });
-
-            const magneticWrap = document.querySelector('.magnetic-wrap');
-            const magneticBtn = document.querySelector('.btn-ig-huge');
-            
-            if(magneticWrap && magneticBtn) {
-                magneticWrap.addEventListener('mousemove', (e) => {
-                    const rect = magneticWrap.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width / 2;
-                    const y = e.clientY - rect.top - rect.height / 2;
-                    magneticBtn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-                });
-                magneticWrap.addEventListener('mouseleave', () => {
-                    magneticBtn.style.transform = `translate(0px, 0px)`;
-                });
-            }
-        }
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('show');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-        document.querySelectorAll('.anim-up, .anim-fade').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
